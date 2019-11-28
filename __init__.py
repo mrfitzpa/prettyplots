@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """prettyplots module
 
-This module contains classes and functions that can be used to make pretty
+This module contains classes and functions that can be used to make pretty plots
 in accordance with the tastes of the author.
 """
 
