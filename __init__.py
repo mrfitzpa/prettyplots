@@ -2,7 +2,7 @@
 """prettyplots module
 
 This module contains classes and functions that can be used to make pretty
-in accordance with the tastes of the author. :)
+in accordance with the tastes of the author.
 """
 
 
@@ -12,7 +12,7 @@ __copyright__  = "Copyright 2019"
 __credits__    = ["Matthew Fitzpatrick"]
 __version__    = "1.0.1"
 __maintainer__ = "Matthew Fitzpatrick"
-__email__      = "mfitzpatrick@dwavesys.com"
+__email__      = "mrfitzpa@sfu.ca"
 __status__     = "Non-production"
 
 
