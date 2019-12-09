@@ -1,8 +1,30 @@
+# Ignore spreadsheet files
+*.xlsx
+
 # Ignore backups
 *~
 
 # Ignore select directories
-__pycache__/*
+__pycache__/
+.ipynb_checkpoints/
+docs/_build/
+docs/reference/
+
+# Ignore .pyc files
+*.pyc
+
+# Ignore LyX files
+*.lyx
 
 # Ignore #*# files
 \#*#
+
+# Ignore images
+*.eps
+*.png
+*.jpg
+*.jpeg
+
+# Ignore data and back up files
+*.pkl
+*.csv

@@ -1,25 +1,12 @@
 #!/usr/bin/env python
-"""prettyplots module
-
-This module contains classes and functions that can be used to make pretty plots
-in accordance with the tastes of the author.
+"""``prettyplots`` is a small Python library for creating plots in accordance
+with the tastes of the author.
 """
 
 
-
-__author__     = "Matthew Fitzpatrick"
-__copyright__  = "Copyright 2019"
-__credits__    = ["Matthew Fitzpatrick"]
-__version__    = "1.0.1"
-__maintainer__ = "Matthew Fitzpatrick"
-__email__      = "mrfitzpa@sfu.ca"
-__status__     = "Non-production"
-
-
-
-####################
-## Load libraries ##
-####################
+#####################################
+## Load libraries/packages/modules ##
+#####################################
 
 # For general array handling:
 import numpy as np
@@ -32,6 +19,21 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 
+############################
+## Authorship information ##
+############################
+
+__author__       = "Matthew Fitzpatrick"
+__copyright__    = "Copyright 2019"
+__credits__      = ["Matthew Fitzpatrick"]
+__version__      = version.version
+__full_version__ = version.full_version
+__maintainer__   = "Matthew Fitzpatrick"
+__email__        = "mrfitzpa@sfu.ca"
+__status__       = "Non-production"
+
+
+
 ##################################
 ## Define classes and functions ##
 ##################################
@@ -41,13 +43,13 @@ def to_np_array(c):
 
     Parameters
     ----------
-    c : scalar | array
+    c : `float` | array_like
         The object to be converted (typically a scalar e.g. float).
 
     Returns
     -------
-    c_array : array
-        The object as an array.
+    c_array : :class:`numpy.ndarray`
+        The object as a numpy array.
     """
     c_array = np.array(c)
     if c_array.shape == ():
@@ -62,9 +64,9 @@ class XYData():
 
     Parameters
     ----------
-    x : array
+    x : array_like(`float`, ndim=1)
         The x-data.
-    y : array
+    y : array_like(`float`, ndim=1)
         The corresponding y-data.
     Attributes
     ----------
@@ -83,85 +85,85 @@ class SinglePlotParams():
 
     Parameters
     -----------
-    xy_data_sets : array
+    xy_data_sets : array_like(:class:`prettyplots.XYData`, ndim=1)
         The xy data sets to be plotted. Should be an array with elements
-        :class:`XYData`.
-    scatterplot : bool
-        If True, plot data as scatterplot.
-    colors : str | array
+        :class:`prettyplots.XYData`.
+    scatterplot : `bool`, optional
+        If `True`, plot data as scatterplot.
+    colors : `str` | array_like(`str`, ndim=1), optional
         A string or an array of strings specifying the colors of each data set.
-    markers : str | array
+    markers : `str` | array_like(`str`, ndim=1), optional
         A string or an array of strings specifying the markers to use (assuming
-        the parameter scatterplot is set to True).
-    markersize : float
+        the parameter scatterplot is set to `True`).
+    markersize : `float`, optional
         A positive float that specifies the size of the markers (if used).
-    linestyles : str | array
+    linestyles : `str` | array_like(`str`, ndim=1), optional
         A string or an array of strings specifying the linestyles of each data
         set.
-    linewidth : float
+    linewidth : `float`, optional
         A positive float that specifies a characteristic linewidth used to
         determine the width of data curves, axes, and ticks.
-    x_lims : two-element array
+    x_lims : array_like(`float`, ndim=1, length=2), optional
         Specifies the plotting range along the x-axis: x_lims[0] = x-min; 
         x_lims[1] = x-max.
-    y_lims : two-element array
+    y_lims : array_like(`float`, ndim=1, length=2), optional
         Specifies the plotting range along the y-axis: y_lims[0] = y-min; 
         y_lims[1] = y-max.
-    x_log_scale : bool
+    x_log_scale : `bool`, optional
         If true, then a logarithmic scale is used for the x-axis, otherwise it
         is not used.
-    y_log_scale : bool
+    y_log_scale : `bool`, optional
         If true, then a logarithmic scale is used for the y-axis, otherwise it
         is not used.
-    x_label : str
+    x_label : `str`, optional
         Specifies the x-axis label.
-    y_label : str
+    y_label : `str`, optional
         Specifies the y-axis label.
-    xy_label_ft_size : float
+    xy_label_ft_size : `float`, optional
         A positive float that specifies the font size of the x and y axes
         labels.
-    legend_labels : array
+    legend_labels : array_like(`str`, ndim=1), optional
         An array of strings specifying the curve labels of each data set.
-    legend_loc : str | two-element array
+    legend_loc : `str` | array_like(`float`, ndim=1, length=2), optional
         A string or two-element array specifying the location of the legend.
-    legend_ft_size : float
+    legend_ft_size : `float`, optional
         A positive float that specifies the font size of the legend.
-    major_xtick_len : float
+    major_xtick_len : `float`, optional
         A positive float that specifies the length of the major ticks on the
         x-axis.
-    minor_xtick_len : float
+    minor_xtick_len : `float`, optional
         A positive float that specifies the length of the minor ticks on the
         x-axis.
-    major_ytick_len : float
+    major_ytick_len : `float`, optional
         A positive float that specifies the length of the major ticks on the
         y-axis.
-    minor_ytick_len : float
+    minor_ytick_len : `float`, optional
         A positive float that specifies the length of the minor ticks on the
         y-axis.
-    major_xtick_spacing : float
+    major_xtick_spacing : `float`, optional
         A positive float that specifies the spacing between adjacent major ticks
         on the x-axis.
-    minor_xtick_spacing : float
+    minor_xtick_spacing : `float`, optional
         A positive float that specifies the spacing between adjacent minor ticks
         on the x-axis.
-    major_ytick_spacing : float
+    major_ytick_spacing : `float`, optional
         A positive float that specifies the spacing between adjacent major ticks
         on the y-axis.
-    minor_ytick_spacing : float
+    minor_ytick_spacing : `float`, optional
         A positive float that specifies the spacing between adjacent minor ticks
         on the y-axis.
-    tick_label_ft_size : float
+    tick_label_ft_size : `float`, optional
         A positive float that specifies the font size of the tick labels.
-    fig_label : str
+    fig_label : `str`, optional
         A string that specifies the figure label.
-    fig_label_coords : two-element array
+    fig_label_coords : array_like('float', ndim=1, length=2), optional
         An array that specifies the position of the figure label.
-    fig_label_ft_size : float
+    fig_label_ft_size : `float`, optional
         A positive float that specifies the font size of the figure label.
-    aspect : str | float
+    aspect : `str` | `float`, optional
         A string or positive float that specifies the aspect ratio of the
         figure.
-    scale : float
+    scale : `float`, optional
         A positive float that specifies the size of the figure.
 
     Attributes
@@ -487,75 +489,75 @@ class SingleImshowParams():
 
     Parameters
     -----------
-    z : array_like(float, ndim=2)
+    z : array_like(`float`, ndim=2)
         The data to be represented as a 2D image.
-    cmap : str | :class:`matplotlib.colors.Colormap` | None
+    cmap : `str` | :class:`matplotlib.colors.Colormap` | `None`, optional
         Colormap used to map scalar data to color.
-    norm : :class:`matplotlib.colors.Normalize` | None
+    norm : :class:`matplotlib.colors.Normalize` | `None`, optional
         Lower limit to the data range that the colormap covers.
-    interpolation : str | None
+    interpolation : `str` | `None`, optional
         The interpolation method used in generating the image.
-    append_axes_kwargs : dict
+    append_axes_kwargs : `dict`, optional
         Keyword arguments specifying the positioning and size of the colorbar
         axis.
-    colorbar_kwargs : dict
+    colorbar_kwargs : `dict`, optional
         Keyword arguments specifying properties of colorbar.
-    xticks : array_like(int, ndim=1) | None
+    xticks : array_like(`int`, ndim=1) | `None`, optional
         Positions of ticks along x-axis.
-    yticks : array_like(int, ndim=1) | None
+    yticks : array_like(`int`, ndim=1) | `None`, optional
         Positions of ticks along y-axis.
-    cbticks : array_like(int, ndim=1) | None
+    cbticks : array_like(`int`, ndim=1) | `None`, optional
         Positions of colorbar ticks.
-    xticklabels : array_like(str, ndim=1, length=len(xticks)) | None
+    xticklabels : array_like(`str`, ndim=1, length=len(``xticks``)) | `None`, optional
         Tick labels along x-axis.
-    yticklabels : array_like(str, ndim=1, length=len(yticks)) | None
+    yticklabels : array_like(`str`, ndim=1, length=len(``yticks``)) | `None`, optional
         Tick labels along y-axis.
-    cbticklabels : array_like(str, ndim=1, length=len(xticks)) | None
+    cbticklabels : array_like(`str`, ndim=1, length=len(``xticks``)) | `None`, optional
         Colorbar tick labels along x-axis.
-    xtick_len : float
+    xtick_len : `float`, optional
         Length of ticks along x-axis.
-    ytick_len : float
+    ytick_len : `float`, optional
         Length of ticks along y-axis.
-    cbtick_len : float
+    cbtick_len : `float`, optional
         Length of colobar ticks.
-    xtick_width : float
+    xtick_width : `float`, optional
         Width of ticks along x-axis.
-    ytick_width : float
+    ytick_width : `float`, optional
         Width of ticks along y-axis.
-    cbtick_width : float
+    cbtick_width : `float`, optional
         Width of colobar ticks.
-    tick_label_ft_size : float
+    tick_label_ft_size : `float`, optional
         Font size of tick labels.
-    vlines : array_like(float, ndim=1)
+    vlines : array_like(`float`, ndim=1), optional
         Positions of vertical lines along x-axis.
-    hlines : array_like(float, ndim=1)
+    hlines : array_like(`float`, ndim=1), optional
         Positions of vertical lines along y-axis.
-    vline_kwargs : dict
+    vline_kwargs : `dict`, optional
         Keyword arguments specifying line properties of vertical lines.
-    hline_kwargs : dict
+    hline_kwargs : `dict`, optional
         Keyword arguments specifying line properties of horizontal lines.
-    frame_thickness : float
+    frame_thickness : `float`, optional
         Thickness of image frame.
-    x_label : str
+    x_label : `str`, optional
         Specifies the x-axis label.
-    y_label : str
+    y_label : `str`, optional
         Specifies the y-axis label.
-    xy_label_ft_size : float
+    xy_label_ft_size : `float`, optional
         Font size of the x and y axis labels.
-    title : str
+    title : `str`, optional
         Title of plot.
-    title_ft_size : float
+    title_ft_size : `float`, optional
         Title font size.
-    fig_label : str
+    fig_label : `str`, optional
         Figure label.
-    fig_label_coords : array_like(float, ndim=1, length=2)
+    fig_label_coords : array_like(`float`, ndim=1, length=2), optional
         Position of the figure label with respect to the coordinate system of
         the axes.
-    fig_label_ft_size : float
+    fig_label_ft_size : `float`, optional
         Font size of figure label.
-    aspect : str | float
+    aspect : `str` | `float`, optional
         Aspect ratio of figure.
-    scale : float
+    scale : `float`, optional
         Size of figure.
 
     Attributes

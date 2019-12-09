@@ -1,0 +1,3 @@
+The following people are part of the prettyplots developer team:
+
+Matthew Fitzpatrick    (e-mail: mrfitzpa@sfu.ca)
