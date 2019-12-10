@@ -1,4 +1,4 @@
 To-Do list
 ==========
 
-- Fix function docstrings.
+Nothing currently on the to-do list.

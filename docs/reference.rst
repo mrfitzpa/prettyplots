@@ -10,3 +10,7 @@ prettyplots Reference
 
 .. autosummary::
     :toctree: reference
+
+    prettyplots.data
+    prettyplots.plot
+    prettyplots.template
