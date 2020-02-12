@@ -29,7 +29,7 @@ from prettyplots.data import XYData
 ############################
 
 __author__     = "Matthew Fitzpatrick"
-__copyright__  = "Copyright 2019"
+__copyright__  = "Copyright 2020"
 __credits__    = ["Matthew Fitzpatrick"]
 __maintainer__ = "Matthew Fitzpatrick"
 __email__      = "mfitzpatrick@dwavesys.com"
@@ -45,7 +45,9 @@ __status__     = "Development"
 __all__ = ["SinglePlotParams",
            "single_plot",
            "SingleImshowParams",
-           "single_imshow"]
+           "single_imshow",
+           "SingleHistParams",
+           "single_hist"]
 
 
 
@@ -81,7 +83,7 @@ class SinglePlotParams():
     scatterplot : `bool`, optional
         If `True`, plot data as scatterplot.
     colors : `str` | array_like(`str`, ndim=1), optional
-        A string or an array of strings specifying the colors of each data set.
+        A string or an array of strings specifying the colors for each data set.
     markers : `str` | array_like(`str`, ndim=1), optional
         A string or an array of strings specifying the markers to use (assuming
         the parameter scatterplot is set to `True`).
@@ -396,6 +398,7 @@ def single_plot(params):
     return None
 
 
+
 class SingleImshowParams():
     r"""Data class to store parameters for the function :func:`single_imshow`.
 
@@ -656,6 +659,383 @@ def single_imshow(params):
 
 
     
+    aspect = params.aspect
+    ax.set_aspect(aspect)
+
+    scale = params.scale
+    fig_dims = fig.get_size_inches()
+    fig.set_figwidth(fig_dims[0] * scale)
+    fig.set_figheight(fig_dims[1] * scale)
+
+
+    
+    fig.tight_layout(pad=1.08)
+    plt.show()
+
+    return None
+
+
+
+class SingleHistParams():
+    r"""Data class to store parameters for the function :func:`single_hist`.
+
+    Parameters
+    -----------
+    x_data_sets : array_like(:class:`prettyplots.XData`, ndim=1)
+        The x data sets to be plotted. Should be an array with elements
+        :class:`prettyplots.XData`.
+    bins : `int` | array_like(`float`, ndim=1), optional
+        If set to an `int`, then a histogram with ``bins+1`` bin edges will be
+        constructed, equally spaced across the full data range. If set to an
+        array, then a histogram will be constructed with bin edges given by
+        ``bins``.
+    cumulative : `bool` | `float`, optional
+        If set to `True`, then for each data set, a histogram is computed where 
+        each in gives the counts in that bin plus all bins for smaller values. 
+        If set to a negative number, then the direction of accumulation is 
+        reversed. If set `False`, then no accumulation is performed. 
+    normalized : `bool`, optional
+        If set to `True`, then for each data set, the histogram is normalized.
+        If set to `False`, no normalization is performed.
+    colors : `str` | array_like(`str`, ndim=1), optional
+        A string or an array of strings specifying the colors for each data set.
+    alphas : `float` | array_like(`float`, ndim=1), optional
+        If set to a `float`, then the same transparency level is applied to each
+        data set. If set to an array, then ``alphas[i]`` corresponds to the
+        transparency level for the :math:`i^{\text{th}}` data set. Note that
+        a transparency value of 1 corresponds to no transparency, whereas a
+        value of zero corresponds to a completely transparent histogram.
+    axes_linewidth : `float`, optional
+        A positive float that specifies a characteristic linewidth used to
+        determine the width of the axes, and ticks.
+    bar_edge_width : `float`, optional
+        A positive float that specifies the width of the histogram bar edges.
+    x_lims : array_like(`float`, ndim=1, length=2), optional
+        Specifies the plotting range along the x-axis: x_lims[0] = x-min; 
+        x_lims[1] = x-max.
+    y_lims : array_like(`float`, ndim=1, length=2), optional
+        Specifies the plotting range along the y-axis: y_lims[0] = y-min; 
+        y_lims[1] = y-max.
+    x_log_scale : `bool`, optional
+        If true, then a logarithmic scale is used for the x-axis, otherwise it
+        is not used.
+    y_log_scale : `bool`, optional
+        If true, then a logarithmic scale is used for the y-axis, otherwise it
+        is not used.
+    x_label : `str`, optional
+        Specifies the x-axis label.
+    y_label : `str`, optional
+        Specifies the y-axis label.
+    xy_label_ft_size : `float`, optional
+        A positive float that specifies the font size of the x and y axes
+        labels.
+    legend_labels : array_like(`str`, ndim=1), optional
+        An array of strings specifying the curve labels of each data set.
+    legend_loc : `str` | array_like(`float`, ndim=1, length=2), optional
+        A string or two-element array specifying the location of the legend.
+    legend_ft_size : `float`, optional
+        A positive float that specifies the font size of the legend.
+    major_xtick_len : `float`, optional
+        A positive float that specifies the length of the major ticks on the
+        x-axis.
+    minor_xtick_len : `float`, optional
+        A positive float that specifies the length of the minor ticks on the
+        x-axis.
+    major_ytick_len : `float`, optional
+        A positive float that specifies the length of the major ticks on the
+        y-axis.
+    minor_ytick_len : `float`, optional
+        A positive float that specifies the length of the minor ticks on the
+        y-axis.
+    major_xtick_spacing : `float`, optional
+        A positive float that specifies the spacing between adjacent major ticks
+        on the x-axis.
+    minor_xtick_spacing : `float`, optional
+        A positive float that specifies the spacing between adjacent minor ticks
+        on the x-axis.
+    major_ytick_spacing : `float`, optional
+        A positive float that specifies the spacing between adjacent major ticks
+        on the y-axis.
+    minor_ytick_spacing : `float`, optional
+        A positive float that specifies the spacing between adjacent minor ticks
+        on the y-axis.
+    tick_label_ft_size : `float`, optional
+        A positive float that specifies the font size of the tick labels.
+    fig_label : `str`, optional
+        A string that specifies the figure label.
+    fig_label_coords : array_like('float', ndim=1, length=2), optional
+        An array that specifies the position of the figure label.
+    fig_label_ft_size : `float`, optional
+        A positive float that specifies the font size of the figure label.
+    aspect : `str` | `float`, optional
+        A string or positive float that specifies the aspect ratio of the
+        figure.
+    scale : `float`, optional
+        A positive float that specifies the size of the figure.
+
+    Attributes
+    ----------
+    Same as parameters.
+    """
+    def __init__(self,
+                 x_data_sets,
+                 bins=10,
+                 cumulative=False,
+                 normalized=False,
+                 colors=None, alphas=0.8, axes_linewidth=3, bar_edge_width=2,
+                 x_lims=[None, None], y_lims=[None, None],
+                 x_log_scale=False, y_log_scale=False,
+                 x_label='', y_label='', xy_label_ft_size=20,
+                 legend_labels=None, legend_loc='best', legend_ft_size=18,
+                 major_xtick_len=8, minor_xtick_len=5,
+                 major_ytick_len=8, minor_ytick_len=5,
+                 major_xtick_spacing=None, minor_xtick_spacing=None,
+                 major_ytick_spacing=None, minor_ytick_spacing=None,
+                 tick_label_ft_size=18,
+                 fig_label='', fig_label_coords=[0.05, 0.93],
+                 fig_label_ft_size=20,
+                 aspect='auto', scale=1):
+        self.x_data_sets = x_data_sets
+        self.bins = bins
+        self.cumulative = cumulative
+        self.normalized = normalized
+
+        self.colors = colors
+        self.alphas = alphas
+        
+        self.axes_linewidth = axes_linewidth
+        self.bar_edge_width = bar_edge_width
+        
+        self.x_lims = x_lims
+        self.y_lims = y_lims
+        self.x_log_scale = x_log_scale
+        self.y_log_scale = y_log_scale
+
+        self.x_label = x_label
+        self.y_label = y_label
+        self.xy_label_ft_size = xy_label_ft_size
+
+        self.legend_labels = legend_labels
+        self.legend_loc = legend_loc
+        self.legend_ft_size = legend_ft_size
+
+        self.major_xtick_len = major_xtick_len
+        self.minor_xtick_len = minor_xtick_len
+        self.major_ytick_len = major_ytick_len
+        self.minor_ytick_len = minor_ytick_len
+        self.major_xtick_spacing = major_xtick_spacing
+        self.minor_xtick_spacing = minor_xtick_spacing
+        self.major_ytick_spacing = major_ytick_spacing
+        self.minor_ytick_spacing = minor_ytick_spacing
+        self.tick_label_ft_size = tick_label_ft_size
+
+        self.fig_label = fig_label
+        self.fig_label_coords = fig_label_coords
+        self.fig_label_ft_size = fig_label_ft_size
+
+        self.aspect = aspect
+        self.scale = scale
+        
+        return None
+
+
+
+def single_hist(params):
+    r"""Generate a histogram plot based on the parameters specified in params.
+
+    Parameters
+    -----------
+    params : :class:`SinglePlotParams`
+        The plotting parameters.
+
+    Returns
+    -------
+
+    """
+    mpl.rcParams['text.usetex'] = True
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+
+
+    x_data_sets = params.x_data_sets
+    num_x_data_sets = len(x_data_sets)
+
+    cumulative = params.cumulative
+    normalized = params.normalized
+    if cumulative == False:
+        hist_type = "bar"
+        bar_edge_width = None
+    else:
+        hist_type = "step"
+        bar_edge_width = params.bar_edge_width
+    
+    legend_labels = params.legend_labels
+    no_legend = False
+    if legend_labels == None:
+        legend_labels = [None] * num_x_data_sets
+        no_legend = True
+
+    colors = params.colors
+    if colors == None:
+        colors = [None] * num_x_data_sets
+    else:
+        colors = _to_np_array(colors)
+        if colors.size == 1:
+            colors = np.resize(colors, num_x_data_sets)
+
+    alphas = _to_np_array(params.alphas)
+    if alphas.size == 1:
+        alphas = np.resize(alphas, num_x_data_sets)
+
+
+        
+    for idx in range(num_x_data_sets):
+        x = x_data_sets[idx].x
+        
+        bins = params.bins
+        if isinstance(bins, int):
+            bins = np.linspace(np.amin(x), np.amax(x), num=bins+1)
+        bins = np.sort(bins)
+
+        if params.x_log_scale == True:
+            log_bins = np.logspace(np.log10(bins[0]),
+                                   np.log10(bins[-1]),
+                                   len(bins))
+
+            ax.hist(x, bins=log_bins, linewidth=bar_edge_width,
+                    alpha=alphas[idx], histtype=hist_type,
+                    cumulative=cumulative, density=normalized,
+                    facecolor=colors[idx], label=legend_labels[idx])
+            
+        else:
+            ax.hist(x, bins=bins, linewidth=bar_edge_width, 
+                    alpha=alphas[idx], histtype=hist_type, 
+                    cumulative=cumulative, density=normalized,
+                    facecolor=colors[idx], label=legend_labels[idx])
+
+    # Need to plot twice to avoid transparent bar edges.
+    if hist_type == "bar":
+        bar_edge_width = params.bar_edge_width
+            
+        for idx in range(num_x_data_sets):
+            x = x_data_sets[idx].x
+        
+            bins = params.bins
+            if isinstance(bins, int):
+                bins = np.linspace(np.amin(x), np.amax(x), num=bins+1)
+                bins = np.sort(bins)
+
+            if params.x_log_scale == True:
+                log_bins = np.logspace(np.log10(bins[0]),
+                                       np.log10(bins[-1]),
+                                       len(bins))
+
+                ax.hist(x, bins=log_bins,
+                        facecolor="None", density=normalized,
+                        edgecolor='black', linewidth=bar_edge_width)
+            
+            else:
+                ax.hist(x, bins=bins,
+                        facecolor="None", density=normalized,
+                        edgecolor='black', linewidth=bar_edge_width)
+
+
+
+    legend_loc = params.legend_loc
+    legend_ft_size = params.legend_ft_size
+    if no_legend:
+        pass
+    else:
+        ax.legend(loc=legend_loc, frameon=True, fontsize=legend_ft_size)
+
+
+    
+    fig_label = params.fig_label
+    fig_label_coords = params.fig_label_coords
+    fig_label_ft_size = params.fig_label_ft_size
+    ax.text(fig_label_coords[0], fig_label_coords[1], fig_label,
+            fontsize=fig_label_ft_size, horizontalalignment='center',
+            verticalalignment='center', transform=ax.transAxes)
+
+
+
+    x_label = params.x_label
+    y_label = params.y_label
+    xy_label_ft_size = params.xy_label_ft_size
+    ax.set_xlabel(x_label, fontsize=xy_label_ft_size)
+    ax.set_ylabel(y_label, fontsize=xy_label_ft_size)
+
+
+
+    if params.x_log_scale == True:
+        ax.set_xscale('log')
+    if params.y_log_scale == True:
+        ax.set_yscale('log')
+    
+    x_min, x_max = params.x_lims
+    y_min, y_max = params.y_lims
+    ax.set_xlim(x_min, x_max)
+    ax.set_ylim(y_min, y_max)
+
+
+
+    tick_label_ft_size = params.tick_label_ft_size
+    
+    major_xtick_len = params.major_xtick_len
+    minor_xtick_len = params.minor_xtick_len
+    major_ytick_len = params.major_ytick_len
+    minor_ytick_len = params.minor_ytick_len
+
+    major_xtick_spacing = params.major_xtick_spacing
+    minor_xtick_spacing = params.minor_xtick_spacing
+    major_ytick_spacing = params.major_ytick_spacing
+    minor_ytick_spacing = params.minor_ytick_spacing
+
+    plt.minorticks_on()
+    
+    if major_xtick_spacing != None:
+        x_major_locator = MultipleLocator(major_xtick_spacing)
+        ax.xaxis.set_major_locator(x_major_locator)
+    if minor_xtick_spacing != None:
+        x_minor_locator = MultipleLocator(minor_xtick_spacing)
+        ax.xaxis.set_minor_locator(x_minor_locator)
+
+    if major_ytick_spacing != None:
+        y_major_locator = MultipleLocator(major_ytick_spacing)
+        ax.yaxis.set_major_locator(y_major_locator)
+    if minor_ytick_spacing != None:
+        y_minor_locator = MultipleLocator(minor_ytick_spacing)
+        ax.yaxis.set_minor_locator(y_minor_locator)
+    
+    ax.xaxis.set_ticks_position('both')
+    ax.yaxis.set_ticks_position('both')
+
+    axes_linewidth = params.axes_linewidth
+    
+    ax.tick_params(axis='x', which='major',
+                   labelsize=tick_label_ft_size,
+                   width=2.0 * axes_linewidth / 3.0,
+                   length=major_xtick_len, direction='in')
+    ax.tick_params(axis='x', which='minor',
+                   width=2.0 * axes_linewidth / 3.0,
+                   length=minor_xtick_len, direction='in')
+    ax.tick_params(axis='y', which='major',
+                   labelsize=tick_label_ft_size,
+                   width=2.0 * axes_linewidth / 3.0,
+                   length=major_ytick_len, direction='in')
+    ax.tick_params(axis='y', which='minor',
+                   width=2.0 * axes_linewidth / 3.0,
+                   length=minor_ytick_len, direction='in')
+
+
+
+    for axis in ['top', 'bottom', 'left', 'right']:
+        ax.spines[axis].set_linewidth(2.0 * axes_linewidth / 3.0)
+
+
+
     aspect = params.aspect
     ax.set_aspect(aspect)
 

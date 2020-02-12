@@ -15,7 +15,7 @@
 ############################
 
 __author__     = "Matthew Fitzpatrick"
-__copyright__  = "Copyright 2019"
+__copyright__  = "Copyright 2020"
 __credits__    = ["Matthew Fitzpatrick"]
 __maintainer__ = "Matthew Fitzpatrick"
 __email__      = "mfitzpatrick@dwavesys.com"
@@ -28,7 +28,25 @@ __status__     = "Development"
 ##################################
 
 # List of public objects in objects.
-__all__ = ["XYData"]
+__all__ = ["XData", "XYData"]
+
+
+
+class XData():
+    r"""Simple data class to store x data for plotting.
+
+    Parameters
+    ----------
+    x : array_like(`float`, ndim=1)
+        The x-data.
+    Attributes
+    ----------
+    Same as parameters.
+    """
+    def __init__(self, x):
+        self.x = x
+
+        return None
 
 
 

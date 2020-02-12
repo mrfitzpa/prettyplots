@@ -24,6 +24,13 @@ from . import data
 from . import plot
 from . import template
 
+from .data import XData, XYData
+from .plot import SinglePlotParams, single_plot
+from .plot import SingleImshowParams, single_imshow
+from .plot import SingleHistParams, single_hist
+from .template import print_single_plot_template, print_single_imshow_template
+from .template import print_single_hist_template
+
 from . import version
 
 

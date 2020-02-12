@@ -1,5 +1,5 @@
-qamps developer team
-====================
+prettyplots developer team
+==========================
 
 .. include:: ../AUTHORS.txt
     :literal:
