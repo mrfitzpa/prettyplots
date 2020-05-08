@@ -73,7 +73,7 @@ def _to_np_array(c):
 
 
 class SinglePlotParams():
-    r"""Data class to store parameters for the function :func:`single_plot`.
+    r"""Data class to store parameters for function :func:`single_plot`.
 
     Parameters
     -----------
@@ -95,6 +95,9 @@ class SinglePlotParams():
     linewidth : `float`, optional
         A positive float that specifies a characteristic linewidth used to
         determine the width of data curves, axes, and ticks.
+    grid_linewidth : `float`, optional
+        The linewidth of the plot grid, if set to ``0``, then the grid will be
+        disabled.
     x_lims : array_like(`float`, ndim=1, length=2), optional
         Specifies the plotting range along the x-axis: x_lims[0] = x-min; 
         x_lims[1] = x-max.
@@ -102,11 +105,11 @@ class SinglePlotParams():
         Specifies the plotting range along the y-axis: y_lims[0] = y-min; 
         y_lims[1] = y-max.
     x_log_scale : `bool`, optional
-        If true, then a logarithmic scale is used for the x-axis, otherwise it
-        is not used.
+        If set to `True`, then a logarithmic scale is used for the x-axis, 
+        otherwise it is not used.
     y_log_scale : `bool`, optional
-        If true, then a logarithmic scale is used for the y-axis, otherwise it
-        is not used.
+        If set to `True`, then a logarithmic scale is used for the y-axis, 
+        otherwise it is not used.
     x_label : `str`, optional
         Specifies the x-axis label.
     y_label : `str`, optional
@@ -157,6 +160,13 @@ class SinglePlotParams():
         figure.
     scale : `float`, optional
         A positive float that specifies the size of the figure.
+    filename : `str` | `None`, optional
+        If set to a `str`, the resulting figure will be saved to the path
+        ``filename``, otherwise the figure will not be saved.
+    img_fmt : `str`, optional
+        Image format.
+    show : `bool`, optional
+        If set to `True`, show the plot, otherwise do not show the plot.
 
     Attributes
     ----------
@@ -165,7 +175,7 @@ class SinglePlotParams():
     def __init__(self,
                  xy_data_sets,
                  scatterplot=False, colors=None, markers=None, markersize=11,
-                 linestyles=None, linewidth=3,
+                 linestyles=None, linewidth=3, grid_linewidth=0,
                  x_lims=[None, None], y_lims=[None, None],
                  x_log_scale=False, y_log_scale=False,
                  x_label='', y_label='', xy_label_ft_size=20,
@@ -177,7 +187,8 @@ class SinglePlotParams():
                  tick_label_ft_size=18,
                  fig_label='', fig_label_coords=[0.05, 0.93],
                  fig_label_ft_size=20,
-                 aspect='auto', scale=1):
+                 aspect='auto', scale=1,
+                 filename=None, img_fmt='pdf', show=True):
         self.xy_data_sets = xy_data_sets
 
         self.scatterplot = scatterplot
@@ -186,6 +197,7 @@ class SinglePlotParams():
         self.markersize = markersize
         self.linestyles = linestyles
         self.linewidth = linewidth
+        self.grid_linewidth = grid_linewidth
         
         self.x_lims = x_lims
         self.y_lims = y_lims
@@ -216,13 +228,17 @@ class SinglePlotParams():
 
         self.aspect = aspect
         self.scale = scale
+
+        self.filename = filename
+        self.img_fmt = img_fmt
+        self.show = show
         
         return None
 
 
 
 def single_plot(params):
-    r"""Generate a single plot based on the parameters specified in params.
+    r"""Generate and a single plot based on the parameters ``params``.
 
     Parameters
     -----------
@@ -281,13 +297,16 @@ def single_plot(params):
         x = xy_data_sets[idx].x
         y = xy_data_sets[idx].y
 
+        xerr = xy_data_sets[idx].xerr
+        yerr = xy_data_sets[idx].yerr
+
         if params.scatterplot:
-            ax.scatter(x, y, marker=markers[idx], c=colors[idx],
-                       s=markersize, label=legend_labels[idx])
+            ax.errorbar(x, y, xerr=xerr, yerr=yerr, marker=markers[idx],
+                        c=colors[idx], s=markersize, label=legend_labels[idx])
         else:
-            ax.plot(x, y, ls=linestyles[idx], c=colors[idx],
-                    lw=linewidth, label=legend_labels[idx],
-                    marker=markers[idx], markersize=markersize)
+            ax.errorbar(x, y, xerr=xerr, yerr=yerr, ls=linestyles[idx],
+                        c=colors[idx], lw=linewidth, label=legend_labels[idx],
+                        marker=markers[idx], markersize=markersize)
 
 
             
@@ -297,6 +316,12 @@ def single_plot(params):
         pass
     else:
         ax.legend(loc=legend_loc, frameon=True, fontsize=legend_ft_size)
+
+
+
+    grid_linewidth = params.grid_linewidth
+    if grid_linewidth != 0:
+        ax.grid(linewidth=grid_linewidth)
 
 
     
@@ -393,7 +418,10 @@ def single_plot(params):
 
     
     fig.tight_layout(pad=1.08)
-    plt.show()
+    if params.show:
+        plt.show()
+    if isinstance(params.filename, str):
+        plt.savefig(params.filename, format=params.img_fmt)
 
     return None
 
@@ -474,6 +502,13 @@ class SingleImshowParams():
         Aspect ratio of figure.
     scale : `float`, optional
         Size of figure.
+    filename : `str` | `None`, optional
+        If set to a `str`, the resulting figure will be saved to the path
+        ``filename``, otherwise the figure will not be saved.
+    img_fmt : `str`, optional
+        Image format.
+    show : `bool`, optional
+        If set to `True`, show the plot, otherwise do not show the plot.
 
     Attributes
     ----------
@@ -497,7 +532,8 @@ class SingleImshowParams():
                  title='', title_ft_size=20,
                  fig_label='', fig_label_coords=[0.07, 0.91],
                  fig_label_ft_size=20,
-                 aspect='auto', scale=1.):
+                 aspect='auto', scale=1.,
+                 filename=None, img_fmt='pdf', show=True):
         self.z = z
 
         self.cmap = cmap
@@ -505,8 +541,6 @@ class SingleImshowParams():
         self.interpolation = interpolation
         self.append_axes_kwargs = append_axes_kwargs
         self.colorbar_kwargs = colorbar_kwargs
-
-
 
         self.xticks = range(z.shape[1]) if xticks == None else xticks
         self.yticks = range(z.shape[0]) if yticks == None else yticks
@@ -527,41 +561,31 @@ class SingleImshowParams():
         self.cbtick_width = cbtick_width
         
         self.tick_label_ft_size = tick_label_ft_size
-
-
         
         self.vlines = vlines
         self.hlines = hlines
         self.vline_kwargs = vline_kwargs
         self.hline_kwargs = hline_kwargs
-
-
         
         self.frame_thickness = frame_thickness
-
-
         
         self.x_label = x_label
         self.y_label = y_label
         self.xy_label_ft_size = xy_label_ft_size
-
-
         
         self.title = title
         self.title_ft_size = title_ft_size
-
-
 
         self.fig_label = fig_label
         self.fig_label_coords = fig_label_coords
         self.fig_label_ft_size = fig_label_ft_size
 
-
-        
         self.aspect = aspect
         self.scale = scale
 
-
+        self.filename = filename
+        self.img_fmt = img_fmt
+        self.show = show
         
         return None
 
@@ -670,7 +694,10 @@ def single_imshow(params):
 
     
     fig.tight_layout(pad=1.08)
-    plt.show()
+    if params.show:
+        plt.show()
+    if isinstance(params.filename, str):
+        plt.savefig(params.filename, format=params.img_fmt)
 
     return None
 
@@ -772,6 +799,13 @@ class SingleHistParams():
         figure.
     scale : `float`, optional
         A positive float that specifies the size of the figure.
+    filename : `str` | `None`, optional
+        If set to a `str`, the resulting figure will be saved to the path
+        ``filename``, otherwise the figure will not be saved.
+    img_fmt : `str`, optional
+        Image format.
+    show : `bool`, optional
+        If set to `True`, show the plot, otherwise do not show the plot.
 
     Attributes
     ----------
@@ -794,7 +828,8 @@ class SingleHistParams():
                  tick_label_ft_size=18,
                  fig_label='', fig_label_coords=[0.05, 0.93],
                  fig_label_ft_size=20,
-                 aspect='auto', scale=1):
+                 aspect='auto', scale=1,
+                 filename=None, img_fmt='pdf', show=True):
         self.x_data_sets = x_data_sets
         self.bins = bins
         self.cumulative = cumulative
@@ -835,6 +870,10 @@ class SingleHistParams():
 
         self.aspect = aspect
         self.scale = scale
+
+        self.filename = filename
+        self.img_fmt = img_fmt
+        self.show = show
         
         return None
 
@@ -1047,6 +1086,9 @@ def single_hist(params):
 
     
     fig.tight_layout(pad=1.08)
-    plt.show()
+    if params.show:
+        plt.show()
+    if isinstance(params.filename, str):
+        plt.savefig(params.filename, format=params.img_fmt)
 
     return None
