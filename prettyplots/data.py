@@ -8,6 +8,9 @@
 ## Load libraries/packages/modules ##
 #####################################
 
+# For deep copies of objects.
+import copy
+
 
 
 ############################
@@ -44,7 +47,7 @@ class XData():
     Same as parameters.
     """
     def __init__(self, x):
-        self.x = x
+        self.x = copy.deepcopy(x)
 
         return None
 
@@ -74,9 +77,9 @@ class XYData():
     Same as parameters.
     """
     def __init__(self, x, y, xerr=None, yerr=None):
-        self.x = x
-        self.y = y
-        self.xerr = xerr
-        self.yerr = yerr
+        self.x = copy.deepcopy(x)
+        self.y = copy.deepcopy(y)
+        self.xerr = copy.deepcopy(xerr)
+        self.yerr = copy.deepcopy(yerr)
 
         return None
